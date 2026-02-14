@@ -1,0 +1,226 @@
+/* Global Resets */
+:root {
+    --captcha-blue: #4A90E2;
+    --captcha-bg: #f9f9f9;
+    --valentine-pink: #ff6b81;
+    --valentine-dark: #c2185b;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #e27989;
+    margin: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+}
+
+.hidden { display: none !important; }
+
+/* --- Step 1: Checkbox --- */
+.captcha-box {
+    background: #fff;
+    border: 1px solid #d3d3d3;
+    border-radius: 3px;
+    width: 300px;
+    height: 74px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 10;
+    transition: opacity 0.5s ease;
+}
+
+.checkbox-container { display: flex; align-items: center; }
+
+.checkbox {
+    width: 24px; height: 24px;
+    border: 2px solid #c1c1c1;
+    border-radius: 2px; margin-right: 12px;
+    cursor: pointer; background: #fff;
+    transition: all 0.2s;
+}
+
+.checkbox:hover { border-color: #b2b2b2; }
+
+.checkbox.loading {
+    border-radius: 50%; border: 2px solid #ccc;
+    border-top: 2px solid var(--captcha-blue);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.checkbox-container label { font-size: 14px; color: #000; }
+
+.captcha-logo { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #555; }
+.captcha-logo img { width: 32px; margin-bottom: 2px; }
+.privacy-links { font-size: 8px; color: #999; margin-top: 2px; }
+
+/* --- Step 2: The Modal Grid --- */
+.captcha-modal {
+    background: #fff;
+    width: 400px;
+    max-width: 92%; /* Mobile Fix: Scale down on small screens */
+    border: 2px solid var(--valentine-pink); /* Start pink immediately */
+    box-shadow: 0 0 20px rgba(255, 107, 129, 0.4);
+    padding: 8px;
+    display: flex; flex-direction: column;
+    position: relative; z-index: 20;
+    /* Fade In Animation */
+    opacity: 0;
+    transform: scale(0.95);
+    animation: popIn 0.5s forwards ease-out;
+}
+
+@keyframes popIn {
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+    background: var(--valentine-pink);
+    color: #fff;
+    padding: 20px 16px;
+    margin-bottom: 8px;
+}
+
+.modal-header h3 { margin: 0; font-size: 16px; font-weight: 400; }
+.modal-header h1 { margin: 4px 0; font-size: 28px; font-weight: 700; }
+.modal-header p { margin: 0; font-size: 13px; }
+
+/* Grid Layout */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px; /* Larger gap for touch */
+    margin-bottom: 8px;
+}
+
+/* --- TILE LOGIC (Flip Animation) --- */
+.tile {
+    width: 100%;
+    aspect-ratio: 1; /* Keeps tiles square */
+    cursor: pointer;
+    perspective: 1000px; /* Required for 3D flip */
+    position: relative;
+    -webkit-tap-highlight-color: transparent; /* Remove blue highlight on mobile tap */
+}
+
+/* The inner card wrapper */
+.tile-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.tile.flipped .tile-inner {
+    transform: rotateY(180deg);
+}
+
+.tile-front, .tile-back {
+    position: absolute;
+    width: 100%; height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 2px;
+}
+
+/* Front is the Image */
+.tile-front {
+    background-size: cover;
+    background-position: center;
+    background-color: #eee;
+}
+
+/* Back is the Text (With Poppies Background) */
+.tile-back {
+    background-color: var(--valentine-pink);
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('assets/poppies.png');
+    background-size: cover;
+    color: white;
+    transform: rotateY(180deg);
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 2px;
+    box-sizing: border-box;
+    border: 2px solid white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    word-break: break-word;
+}
+
+/* Footer */
+.modal-footer {
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 8px 0;
+    border-top: 1px solid #ececec;
+}
+.icons { color: #777; font-size: 18px; letter-spacing: 8px; }
+
+.verify-btn {
+    background: var(--valentine-pink);
+    color: #fff; border: none;
+    padding: 10px 24px; font-weight: bold;
+    border-radius: 2px; cursor: pointer;
+    transition: background 0.3s;
+}
+.verify-btn:disabled { background: #ccc; cursor: default; }
+
+/* --- Step 3: Success Screen --- */
+.success-screen {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: #ff9597;
+    /* Poppies Background */
+    background-image: url('assets/poppies.png');
+    background-size: cover;
+    background-position: center;
+    
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    z-index: 100;
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.success-screen h1 {
+    color: var(--valentine-dark);
+    font-size: 3.5em;
+    font-family: 'Brush Script MT', cursive;
+    margin-bottom: 10px;
+    padding: 0 20px;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+    animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.1); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.1); }
+    60% { transform: scale(1); }
+}
+
+.success-screen p {
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    font-size: 1.5em;
+    font-weight: 500;
+    max-width: 80%;
+}
+
+/* Mobile Media Queries */
+@media (max-width: 480px) {
+    .modal-header h1 { font-size: 22px; }
+    .success-screen h1 { font-size: 2.5em; }
+    .tile-back { font-size: 0.9rem; } /* Smaller text on cards */
+}
