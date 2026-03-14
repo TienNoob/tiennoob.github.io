@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Running</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --blue: #3b82f6;
+  --blue-dark: #2563eb;
+  --blue-light: #93c5fd;
+  --blue-pale: #dbeafe;
+  --bg: #eef3fb;
+  --white: #ffffff;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --green: #10b981;
+  --orange: #f59e0b;
+}
+body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: 'Nunito', sans-serif; }
+
+/* ── NAV ── */
+nav {
+  background: var(--white);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.07);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.nav-logo { font-size: 20px; font-weight: 900; color: var(--text); margin-right: auto; }
+.nav-logo span { color: var(--blue); }
+.nav-links { display: flex; gap: 24px; list-style: none; margin-right: 20px; }
+.nav-links li a {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 13.5px;
+  padding-bottom: 3px;
+  border-bottom: 2.5px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.nav-links li a:hover { color: var(--blue); }
+.nav-links li a.active { color: var(--text); border-bottom-color: var(--blue); }
+.nav-user { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13.5px; margin-right: 12px; cursor: pointer; }
+.nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--blue-pale); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.btn-nav { background: var(--blue-dark); color: #fff; border: none; border-radius: 24px; padding: 9px 20px; font-weight: 700; font-size: 13.5px; display: flex; align-items: center; gap: 5px; }
+.btn-nav::after { content: '›'; font-size: 16px; }
+
+/* ── PAGES ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── SHARED COMPONENTS ── */
+.hero {
+  background: linear-gradient(135deg, #e8f0fe 0%, #f0f7ff 60%, #dbeafe 100%);
+  padding: 32px 40px 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+  min-height: 210px;
+}
+.hero-text h1 { font-size: 30px; font-weight: 900; }
+.hero-text h1 span { color: var(--blue); }
+.hero-text p { color: var(--muted); margin-top: 6px; font-size: 14.5px; max-width: 420px; line-height: 1.55; }
+.hero-badge {
+  position: absolute; top: 20px; right: 310px;
+  background: #fff; border-radius: 20px; padding: 10px 18px;
+  display: flex; gap: 8px; align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,.1); font-size: 20px;
+}
+.hero-figure {
+  height: 195px; width: 280px;
+  background: linear-gradient(180deg,#c5ddf7 0%,#8bbcee 100%);
+  border-radius: 16px 16px 0 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 85px; flex-shrink: 0;
+}
+.content { padding: 24px 40px; }
+.card { background: var(--white); border-radius: 16px; padding: 20px; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+.card-title { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
+.section-arrow { font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.section-arrow::before { content: '→'; color: var(--blue); font-size: 20px; }
+.btn-primary { background: var(--blue-dark); color: #fff; border: none; border-radius: 10px; padding: 10px 18px; font-weight: 700; font-size: 13px; }
+.btn-outline { background: transparent; border: 1.5px solid var(--border); border-radius: 10px; padding: 9px 18px; font-weight: 700; font-size: 13px; color: var(--text); }
+.btn-pill { background: transparent; border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px; font-weight: 700; font-size: 12px; color: var(--text); }
+.btn-pill-blue { background: var(--blue-dark); color: #fff; border: none; border-radius: 20px; padding: 8px 18px; font-weight: 700; font-size: 12.5px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.flex-gap { display: flex; gap: 16px; }
+footer {
+  background: var(--white); padding: 26px 40px;
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-top: 24px; border-top: 1px solid var(--border);
+}
+.footer-cols { display: flex; gap: 36px; }
+.footer-col h4 { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 7px; }
+.footer-col a { display: block; font-size: 12.5px; color: var(--muted); margin-bottom: 4px; }
+.footer-right { text-align: right; }
+.social-row { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 8px; }
+.soc { width: 30px; height: 30px; background: var(--blue-dark); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; }
+.copy { font-size: 11px; color: var(--muted); }
+.stars { color: var(--orange); font-size: 15px; letter-spacing: 2px; }
+
+/* ═══════════════════════════
+   PAGE 1 — HOME
+═══════════════════════════ */
+#page-home .hero { min-height: 260px; }
+#page-home .hero-text h1 { font-size: 34px; }
+#page-home .hero-text p strong { font-weight: 800; }
+.home-shoe-card {
+  background: var(--white); border-radius: 16px; padding: 22px 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  margin-top: -30px; position: relative; z-index: 10;
+  max-width: 560px;
+}
+.home-shoe-inner { display: flex; gap: 18px; align-items: center; margin-bottom: 16px; }
+.shoe-img-home { font-size: 65px; }
+.shoe-detail h3 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+.shoe-cond { color: var(--muted); font-size: 12.5px; margin-top: 4px; }
+.home-shoe-stats { display: flex; gap: 0; border-top: 1px solid var(--border); padding-top: 14px; }
+.hss { flex: 1; border-right: 1px solid var(--border); padding-right: 14px; margin-right: 14px; }
+.hss:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.hss-val { font-size: 18px; font-weight: 800; }
+.hss-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.hss-date { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 700; }
+.home-quick-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-left: 20px; flex: 1; }
+.qcard { background: var(--white); border-radius: 14px; padding: 16px 14px; box-shadow: 0 1px 6px rgba(0,0,0,.07); text-align: center; cursor: pointer; transition: transform .15s, box-shadow .15s; }
+.qcard:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.1); }
+.qcard-icon { font-size: 36px; margin-bottom: 10px; }
+.qcard-label { font-size: 13px; font-weight: 800; color: var(--text); }
+.home-bottom-row { display: flex; align-items: flex-start; gap: 20px; padding: 0 40px 28px; }
+
+/* ═══════════════════════════
+   PAGE 2 — RUN STATS
+═══════════════════════════ */
+.stats-top { display: grid; grid-template-columns: 370px 1fr; gap: 20px; margin-bottom: 20px; }
+.map-box {
+  width: 100%; height: 135px;
+  background: linear-gradient(135deg,#c5ddf7,#a8cff5);
+  border-radius: 12px; margin-bottom: 14px;
+  position: relative; overflow: hidden;
+}
+.map-avatar { position: absolute; top: 10px; left: 10px; width: 30px; height: 30px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+.run-3stats { display: flex; justify-content: space-between; margin-bottom: 14px; }
+.rstat { text-align: center; }
+.rstat-val { font-size: 20px; font-weight: 800; }
+.rstat-val sup { font-size: 13px; font-weight: 700; }
+.rstat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.w-4stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.w4 { border-left: 2.5px solid var(--blue-pale); padding-left: 10px; }
+.w4-val { font-size: 17px; font-weight: 800; }
+.w4-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.weekly-goal-bar { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; display: flex; align-items: center; font-size: 12.5px; color: var(--muted); cursor: pointer; }
+.weekly-goal-bar span { margin-left: auto; color: var(--blue); }
+.stats-bottom { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+.week-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.week-label { font-size: 16px; font-weight: 800; }
+.week-label b { color: var(--blue); }
+.week-select { border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px; font-family: 'Nunito',sans-serif; font-weight: 700; font-size: 12.5px; appearance: none; cursor: pointer; background: #fff; }
+.m4stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 18px; }
+.m4 .lbl { font-size: 10px; text-transform: uppercase; color: var(--muted); letter-spacing: .4px; margin-bottom: 3px; }
+.m4 .val { font-size: 21px; font-weight: 800; }
+.m4 .val small { font-size: 12px; }
+/* bars */
+.bar-chart-wrap { position: relative; padding-left: 40px; margin-bottom: 4px; }
+.bar-chart-y { position: absolute; left: 0; top: 0; bottom: 20px; display: flex; flex-direction: column; justify-content: space-between; font-size: 10px; color: var(--muted); }
+.bar-chart { display: flex; align-items: flex-end; gap: 10px; height: 120px; }
+.bar-item { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+.bar { width: 100%; background: var(--blue-pale); border-radius: 6px 6px 0 0; position: relative; }
+.bar.today { background: var(--blue-dark); }
+.bar-dot { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 8px; height: 8px; background: var(--blue); border: 2px solid #fff; border-radius: 50%; }
+.bar-today-dot { background: #fff; border-color: var(--blue); }
+.bar-day { font-size: 11px; color: var(--muted); font-weight: 600; }
+.bar-day.today { font-weight: 800; color: var(--text); }
+.pace-strip { display: flex; align-items: center; gap: 14px; padding: 10px 0; border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); margin-bottom: 16px; font-size: 12.5px; color: var(--muted); }
+.pace-strip strong { font-size: 15px; color: var(--text); }
+/* mini line chart */
+.line-lbl { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+.bottom-stats { display: flex; gap: 22px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+.bottom-stats strong { font-size: 16px; font-weight: 800; color: var(--text); }
+/* usage card */
+.donut-wrap { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.donut-svg { width: 78px; height: 78px; flex-shrink: 0; }
+.donut-info .big { font-size: 22px; font-weight: 800; color: var(--blue-dark); }
+.donut-info .sub { font-size: 11px; color: var(--muted); }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+.legend { font-size: 12.5px; display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+.shoe-km-line { font-size: 12px; color: var(--muted); padding-top: 8px; border-top: 1px solid var(--border); margin-bottom: 12px; }
+.freq-title { font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+.freq-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.freq-thumb { width: 36px; height: 36px; background: var(--blue-pale); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+.freq-row:last-of-type { border-bottom: none; }
+
+/* ═══════════════════════════
+   PAGE 3 — SHOE CARE
+═══════════════════════════ */
+.shoe-hero-wrap { display: flex; gap: 20px; flex-wrap: wrap; padding: 22px 40px; }
+.shoe-main-card { background: var(--white); border-radius: 16px; padding: 22px; box-shadow: 0 1px 6px rgba(0,0,0,.06); flex: 1.2; min-width: 340px; }
+.shoe-inner-top { display: flex; gap: 16px; align-items: center; margin-bottom: 16px; }
+.shoe-emoji { font-size: 64px; }
+.shoe-stats-row { display: flex; gap: 18px; border-top: 1px solid var(--border); padding-top: 14px; align-items: center; }
+.ss { flex: 1; }
+.ss-val { font-size: 17px; font-weight: 800; }
+.ss-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.shoe-side { display: flex; flex-direction: column; gap: 14px; flex: 1; min-width: 220px; }
+.qr-card { background: var(--white); border-radius: 14px; padding: 16px; box-shadow: 0 1px 6px rgba(0,0,0,.06); display: flex; gap: 14px; align-items: flex-start; }
+.qr-code { width: 62px; height: 62px; background: var(--text); border-radius: 8px; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.qr-code svg { width: 62px; height: 62px; }
+.dist-card { background: var(--white); border-radius: 14px; padding: 16px; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+.dist-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13.5px; font-weight: 700; }
+.remind-row { display: flex; align-items: center; gap: 8px; font-size: 13.5px; }
+.remind-row span { color: var(--orange); font-weight: 800; }
+/* shoe section below */
+.shoe-section-wrap { display: grid; grid-template-columns: 1fr 280px; gap: 20px; padding: 0 40px; }
+.running-level-card { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,.06); display: flex; gap: 0; }
+.rl-scene { flex: 1; background: linear-gradient(135deg,#d4eaf7,#bbd8f0); display: flex; align-items: flex-end; justify-content: space-around; padding: 20px; min-height: 200px; }
+.rl-kiosk { background: #d4e8f7; border: 2px solid #90bfe0; border-radius: 10px; padding: 14px 16px; text-align: left; font-size: 12.5px; font-weight: 700; }
+.rl-kiosk .row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #b0cfe8; }
+.rl-kiosk .row:last-child { border-bottom: none; }
+.reminders-card { background: var(--white); border-radius: 16px; padding: 20px; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+.due-badge { display: flex; align-items: center; gap: 8px; background: #fff7ed; border-radius: 10px; padding: 8px 12px; margin-bottom: 12px; font-size: 13px; font-weight: 700; }
+.due-badge .due { color: var(--orange); }
+.check-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.check-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+.check-item::before { content: '✓'; color: var(--blue); font-weight: 800; }
+.shoe-care-tips { padding: 20px 40px; display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.care-card { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+.care-card-img { height: 120px; background: linear-gradient(135deg,#d4eaf7,#c5ddf7); display: flex; align-items: center; justify-content: center; font-size: 48px; }
+.care-card-body { padding: 16px; }
+.care-card-title { font-size: 14px; font-weight: 800; margin-bottom: 6px; color: var(--blue-dark); }
+.care-card-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+
+/* ═══════════════════════════
+   PAGE 4 — RUN TIPS
+═══════════════════════════ */
+.tips-main-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.tip-item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 16px; }
+.tip-icon { width: 50px; height: 50px; background: var(--blue-pale); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.tip-body h4 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+.tip-body p { font-size: 12.5px; color: var(--muted); margin-bottom: 8px; line-height: 1.45; }
+.tips-3col { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.tip-mini { display: flex; flex-direction: column; gap: 8px; }
+.tip-mini .tip-icon { width: 44px; height: 44px; font-size: 20px; }
+.wide-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.wide-card { border-radius: 16px; padding: 24px; box-shadow: 0 1px 6px rgba(0,0,0,.06); position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 10px; }
+.wide-card h3 { font-size: 17px; font-weight: 800; }
+.wide-card p { font-size: 13px; color: var(--muted); line-height: 1.5; max-width: 220px; }
+.wide-card-fig { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 56px; opacity: .75; }
+.tips-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.phone-mock { background: #f1f5f9; border-radius: 12px; padding: 14px; margin-bottom: 12px; display: flex; gap: 14px; }
+.phone-screen { background: linear-gradient(135deg,#dbeafe,#e0f2fe); border-radius: 10px; width: 88px; height: 108px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; text-align: center; padding: 8px; color: var(--blue-dark); flex-shrink: 0; }
+.ph-list-item { display: flex; align-items: center; gap: 7px; font-size: 12px; margin-bottom: 6px; }
+.ph-chk { width: 16px; height: 16px; background: var(--blue-pale); border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--blue-dark); flex-shrink: 0; }
+.health-metric { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.health-metric:last-of-type { border-bottom: none; }
+.health-metric .val { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 5px; }
+.health-metric .val .up { color: var(--green); font-size: 11px; }
+
+/* ═══════════════════════════
+   PAGE 5 — FAQ
+═══════════════════════════ */
+.faq-search { background: var(--white); padding: 18px 40px; border-bottom: 1px solid var(--border); }
+.faq-search-inner { display: flex; max-width: 480px; }
+.faq-input {
+  flex: 1; border: 1.5px solid var(--border); border-right: none;
+  border-radius: 10px 0 0 10px; padding: 10px 14px 10px 38px;
+  font-family: 'Nunito',sans-serif; font-size: 13.5px; outline: none;
+  background: #f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 12px center;
+}
+.faq-btn { background: var(--blue-dark); color: #fff; border: none; border-radius: 0 10px 10px 0; padding: 10px 20px; font-weight: 700; font-size: 13.5px; }
+.faq-content { padding: 24px 40px; max-width: 900px; margin: 0 auto; }
+.faq-section { background: var(--white); border-radius: 16px; padding: 22px; box-shadow: 0 1px 6px rgba(0,0,0,.06); margin-bottom: 18px; }
+.faq-section-title { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 1.5px solid var(--border); margin-bottom: 4px; }
+.faq-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background .12s; border-radius: 4px; }
+.faq-item:last-child { border-bottom: none; }
+.faq-item:hover { background: var(--bg); }
+.faq-q { font-weight: 600; font-size: 13.5px; flex: 1; }
+.faq-chevron { color: var(--muted); font-size: 12px; min-width: 18px; text-align: center; transition: transform .2s; }
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+.faq-answer { padding: 0 4px 12px 4px; font-size: 13px; color: var(--muted); line-height: 1.6; display: none; }
+.faq-item.open + .faq-answer { display: block; }
+.faq-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+.not-found { background: var(--white); border-radius: 16px; padding: 28px 24px; box-shadow: 0 1px 6px rgba(0,0,0,.06); text-align: center; }
+.not-found h3 { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+.not-found p { color: var(--muted); font-size: 13.5px; margin-bottom: 14px; }
+.not-found a { color: var(--blue); font-weight: 700; }
+
+/* ═══════════════════════════
+   PAGE 6 — HOW TO RUN (Learn)
+═══════════════════════════ */
+.learn-hero { background: linear-gradient(135deg,#e8f0fe,#dbeafe); padding: 36px 40px; text-align: center; }
+.learn-hero h1 { font-size: 32px; font-weight: 900; }
+.learn-hero h1 .how { color: var(--orange); }
+.learn-hero h1 .run { color: var(--blue); }
+.steps-wrap { padding: 28px 40px; display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+.step-card { background: var(--white); border-radius: 16px; padding: 20px; box-shadow: 0 1px 6px rgba(0,0,0,.06); display: flex; flex-direction: column; gap: 10px; position: relative; }
+.step-num { width: 30px; height: 30px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 14px; flex-shrink: 0; }
+.step-fig { height: 100px; background: linear-gradient(135deg,#c8def7,#a8cff5); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 44px; }
+.step-label { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.4; }
+.step-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.step-arrow { position: absolute; right: -14px; top: 50%; transform: translateY(-50%); color: var(--blue); font-size: 20px; font-weight: 800; z-index: 5; }
+.steps-row-2 { padding: 0 40px 28px; display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+</style>
+</head>
+<body>
+
+<!-- ══════ NAV ══════ -->
+<nav>
+  <div class="nav-logo">my <span>running</span></div>
+  <ul class="nav-links">
+    <li><a href="#" class="nav-link active" data-page="page-home">Home</a></li>
+    <li><a href="#" class="nav-link" data-page="page-stats">Run Stats</a></li>
+    <li><a href="#" class="nav-link" data-page="page-shoe">Shoe Care</a></li>
+    <li><a href="#" class="nav-link" data-page="page-tips">Run Tips</a></li>
+    <li><a href="#" class="nav-link" data-page="page-learn">Run Awareness</a></li>
+    <li><a href="#" class="nav-link" data-page="page-faq">FAQs</a></li>
+  </ul>
+  <div class="nav-user"><div class="nav-avatar">🧑</div> Hi, John ▾</div>
+  <button class="btn-nav" onclick="navigate('page-stats')">Track Run</button>
+</nav>
+
+
+<!-- ══════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <div class="hero" style="min-height:280px;">
+    <div class="hero-text">
+      <h1>Welcome back, <span>John!</span></h1>
+      <p>Track your running <strong>shoe condition</strong><br>and performance.</p>
+      <br>
+      <button class="btn-primary" style="border-radius:24px;padding:11px 24px;font-size:14px;" onclick="navigate('page-stats')">Track Run ›</button>
+    </div>
+    <div class="hero-badge">🏃 📈 ❤️</div>
+    <div class="hero-figure">🏃</div>
+  </div>
+
+  <div class="home-bottom-row" style="padding-top:20px;">
+    <!-- Shoe Card -->
+    <div class="home-shoe-card">
+      <div class="card-title" style="margin-bottom:10px;">My Running Shoes</div>
+      <div class="home-shoe-inner">
+        <div class="shoe-emoji">👟</div>
+        <div>
+          <div class="shoe-detail"><h3>Nike Air Zoom Pegasus 39</h3></div>
+          <div class="stars">★★★★☆</div>
+          <div class="shoe-cond">Good Condition</div>
+        </div>
+      </div>
+      <div class="home-shoe-stats">
+        <div class="hss">
+          <div class="hss-val">415.5 km</div>
+          <div class="hss-lbl">Total Distance Ran</div>
+        </div>
+        <div class="hss">
+          <div class="hss-date">📅 August 1</div>
+          <div class="hss-lbl">Cleaning Reminder Due</div>
+        </div>
+        <div class="hss">
+          <div class="hss-val">6.1 km</div>
+          <div class="hss-lbl">Avg. Run Distance</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick cards -->
+    <div class="home-quick-cards">
+      <div class="qcard" onclick="navigate('page-shoe')">
+        <div class="qcard-icon">🧹</div>
+        <div class="qcard-label">Shoe Care Tips</div>
+      </div>
+      <div class="qcard" onclick="navigate('page-stats')">
+        <div class="qcard-icon">📊</div>
+        <div class="qcard-label">Run &amp; Health Stats</div>
+      </div>
+      <div class="qcard" onclick="navigate('page-tips')">
+        <div class="qcard-icon">💡</div>
+        <div class="qcard-label">Run Tips &amp; Awareness</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:0 40px;">
+    <div class="section-arrow" style="margin-bottom:14px;">Learn How to Run</div>
+    <div style="background:var(--white);border-radius:16px;padding:22px;box-shadow:0 1px 6px rgba(0,0,0,.06);display:flex;align-items:center;gap:14px;">
+      <div style="flex:1;">
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;">Gia Huy, 20 years old, FTU student wants to improve his health through running and needs running shoes. Follow these 7 steps to get started with the right shoes and form.</p>
+      </div>
+      <button class="btn-pill-blue" onclick="navigate('page-learn')">View Guide ›</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-cols">
+      <div class="footer-col"><h4>Support</h4><a href="#">FAds</a><a href="#">Blog ›</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">Contact Us</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">About My Running</a><a href="#">Blog</a></div>
+      <div class="footer-col"><h4>Follow Us</h4><a href="#">Privacy Policy</a></div>
+    </div>
+    <div class="footer-right">
+      <div class="social-row"><div class="soc">f</div><div class="soc">📸</div><div class="soc">▶</div><div class="soc">♪</div><div class="soc">♪</div></div>
+      <div class="copy">© 2024 My Running.. All rights reserved.</div>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: RUN STATS
+══════════════════════════════════ -->
+<div id="page-stats" class="page">
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Great run, <span>John!</span></h1>
+      <p>Here's your session and weekly stats below.</p>
+    </div>
+    <div class="hero-badge">🏃 📈 ❤️</div>
+    <div class="hero-figure">🏃</div>
+  </div>
+
+  <div class="content">
+    <div class="stats-top">
+      <!-- Today's Run -->
+      <div class="card">
+        <div class="card-title" style="display:flex;justify-content:space-between;">Today's Run <span style="color:var(--blue);font-size:16px;">⬆ ▶</span></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">Today &nbsp;|&nbsp; <b style="color:var(--blue);">8:45 AM</b> — 7:45–8:27 AM</div>
+        <div class="map-box">
+          <div class="map-avatar">🧑</div>
+          <svg width="100%" height="100%" viewBox="0 0 340 135" xmlns="http://www.w3.org/2000/svg">
+            <rect width="340" height="135" fill="#c5ddf7"/>
+            <rect x="20" y="42" width="80" height="60" rx="10" fill="none" stroke="#a0c0e8" stroke-width="8"/>
+            <rect x="120" y="22" width="100" height="40" rx="8" fill="none" stroke="#a0c0e8" stroke-width="8"/>
+            <rect x="232" y="22" width="88" height="88" rx="10" fill="none" stroke="#a0c0e8" stroke-width="8"/>
+            <rect x="120" y="72" width="100" height="38" rx="8" fill="none" stroke="#a0c0e8" stroke-width="8"/>
+            <polyline points="60,72 60,102 200,102 200,42 280,42 280,66 200,66 200,102" fill="none" stroke="#2563eb" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="60" cy="72" r="6" fill="#2563eb"/>
+            <circle cx="280" cy="66" r="5" fill="#f59e0b" stroke="#fff" stroke-width="2"/>
+          </svg>
+          <div style="position:absolute;bottom:10px;right:24px;font-size:20px;">📍</div>
+        </div>
+        <div class="run-3stats">
+          <div class="rstat"><div class="rstat-val">41m <sup>35s</sup></div><div class="rstat-lbl">Duration</div></div>
+          <div class="rstat"><div class="rstat-val">6.40 <sup>km</sup></div><div class="rstat-lbl">Distance</div></div>
+          <div class="rstat"><div class="rstat-val">450 <sup>kcal</sup></div><div class="rstat-lbl">Calories</div></div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn-primary">Manage Shoes</button>
+          <button class="btn-outline">View Log ›</button>
+        </div>
+      </div>
+
+      <!-- Weekly Progress mini -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div class="card-title" style="margin:0;">Weekly Progress</div>
+          <div style="font-size:12px;color:var(--muted);">Last &amp; weeks &nbsp;<b style="color:var(--blue);font-size:15px;">4.13 km</b></div>
+        </div>
+        <div class="w-4stats">
+          <div class="w4"><div class="w4-val">21.2 km</div><div class="w4-lbl">Weekly Distance</div></div>
+          <div class="w4"><div class="w4-val">2.15 min</div><div class="w4-lbl">Weekly Duration</div></div>
+          <div class="w4"><div class="w4-val">6:22 —</div><div class="w4-lbl">Avg Slvg Pace</div></div>
+          <div class="w4"><div class="w4-val">1,453 kcal</div><div class="w4-lbl">Weekly Calories</div></div>
+        </div>
+        <div class="weekly-goal-bar">🏃 Weekly Distance Goal <span>›</span></div>
+      </div>
+    </div>
+
+    <div class="section-arrow">Weekly Progress</div>
+
+    <div class="stats-bottom">
+      <!-- Big chart card -->
+      <div class="card">
+        <div class="week-head">
+          <div class="week-label">Week: <b>21 → 25</b></div>
+          <select class="week-select"><option>April 21–25</option></select>
+        </div>
+        <div class="m4stats">
+          <div class="m4"><div class="lbl">Distance</div><div class="val">21.2 <small>km</small></div></div>
+          <div class="m4"><div class="lbl">Duration</div><div class="val">2 h<small> 15 min</small></div></div>
+          <div class="m4"><div class="lbl">Pace</div><div class="val">6:22 <small>min/km</small></div></div>
+          <div class="m4"><div class="lbl">Calories</div><div class="val">1,453 <small>kcal</small></div></div>
+        </div>
+
+        <div class="bar-chart-wrap">
+          <div class="bar-chart-y"><span>20 km</span><span>30 km</span><span>10 km</span></div>
+          <div class="bar-chart">
+            <div class="bar-item"><div class="bar" style="height:34%;"><div class="bar-dot"></div></div><div class="bar-day">Tue</div></div>
+            <div class="bar-item"><div class="bar" style="height:48%;"><div class="bar-dot"></div></div><div class="bar-day">Wed</div></div>
+            <div class="bar-item"><div class="bar" style="height:60%;"><div class="bar-dot"></div></div><div class="bar-day">Thu</div></div>
+            <div class="bar-item"><div class="bar" style="height:72%;"><div class="bar-dot"></div></div><div class="bar-day">Thu</div></div>
+            <div class="bar-item"><div class="bar" style="height:84%;"><div class="bar-dot"></div></div><div class="bar-day">Fri</div></div>
+            <div class="bar-item"><div class="bar today" style="height:100%;"><div class="bar-dot bar-today-dot"></div></div><div class="bar-day today">Today</div></div>
+          </div>
+        </div>
+
+        <div class="pace-strip">
+          <span>Average Pace</span>
+          <strong>170 spm/spm</strong>
+          <span>›</span>
+          <span>🔥 1453 kcal</span>
+          <span>🔥 1453 kcal</span>
+        </div>
+
+        <div class="line-lbl">Weekly Distance</div>
+        <svg width="100%" height="78" viewBox="0 0 520 78" xmlns="http://www.w3.org/2000/svg">
+          <rect x="12" y="52" width="46" height="20" rx="3" fill="#dbeafe"/>
+          <rect x="96" y="42" width="46" height="30" rx="3" fill="#dbeafe"/>
+          <rect x="180" y="32" width="46" height="40" rx="3" fill="#dbeafe"/>
+          <rect x="264" y="24" width="46" height="48" rx="3" fill="#dbeafe"/>
+          <rect x="348" y="14" width="46" height="58" rx="3" fill="#dbeafe"/>
+          <rect x="432" y="4" width="56" height="68" rx="3" fill="#2563eb"/>
+          <polyline points="35,50 119,40 203,30 287,22 371,12 460,4" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="35" cy="50" r="4" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+          <circle cx="119" cy="40" r="4" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+          <circle cx="203" cy="30" r="4" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+          <circle cx="287" cy="22" r="4" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+          <circle cx="371" cy="12" r="4" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+          <circle cx="460" cy="4" r="5" fill="#2563eb" stroke="#fff" stroke-width="2"/>
+          <text x="10" y="76" font-size="9" fill="#94a3b8">20 km</text>
+          <text x="98" y="76" font-size="9" fill="#94a3b8">Tuesday</text>
+          <text x="182" y="76" font-size="9" fill="#94a3b8">Wed</text>
+          <text x="268" y="76" font-size="9" fill="#94a3b8">Thu</text>
+          <text x="350" y="76" font-size="9" fill="#94a3b8">Thu</text>
+          <text x="434" y="76" font-size="9" fill="#1e293b" font-weight="700">Today</text>
+        </svg>
+
+        <div class="bottom-stats">
+          <div><strong>6.25</strong> /min/km</div>
+          <div>🔄 <strong>170</strong> spm</div>
+          <div>❄️ <strong>170</strong> spm</div>
+          <div>🔥 <strong>1453</strong> kcal</div>
+        </div>
+      </div>
+
+      <!-- Run Usage Summary -->
+      <div class="card">
+        <div class="card-title">Run Usage Summary</div>
+        <div class="donut-wrap">
+          <svg class="donut-svg" viewBox="0 0 78 78" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="39" cy="39" r="29" fill="none" stroke="#dbeafe" stroke-width="10"/>
+            <circle cx="39" cy="39" r="29" fill="none" stroke="#2563eb" stroke-width="10" stroke-dasharray="145 182" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 39 39)"/>
+            <circle cx="39" cy="39" r="29" fill="none" stroke="#93c5fd" stroke-width="10" stroke-dasharray="37 182" stroke-dashoffset="-145" stroke-linecap="round" transform="rotate(-90 39 39)"/>
+            <text x="39" y="43" text-anchor="middle" font-size="16" font-family="Nunito" font-weight="800" fill="#1e293b">👟</text>
+          </svg>
+          <div class="donut-info">
+            <div class="big">411.5 km</div>
+            <div class="sub">45 kms</div>
+            <div style="font-size:12.5px;color:var(--muted);margin-top:4px;">•p.45 runs</div>
+          </div>
+        </div>
+        <div class="legend">
+          <div><span class="legend-dot" style="background:#2563eb;"></span>Nike Air Zoom Pegasus 39</div>
+          <div><span class="legend-dot" style="background:#93c5fd;"></span>Adidas Ultraboost 22</div>
+        </div>
+        <div class="shoe-km-line">🔄 415.3 km &nbsp; Aug, Frequen F oes</div>
+        <div class="freq-title">Frequent Run Times</div>
+        <div class="freq-row">
+          <div class="freq-thumb">🌅</div>
+          <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Thursday</div><div style="font-size:11px;color:var(--muted);">22.4%</div></div>
+          <div style="text-align:right;"><div style="font-weight:700;font-size:13px;">5 PM</div><div style="font-size:11px;color:var(--muted);">24.4%</div></div>
+          <span style="color:var(--blue-light);margin-left:6px;">◇</span>
+        </div>
+        <div class="freq-row">
+          <div class="freq-thumb">🌆</div>
+          <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Tuesday</div><div style="font-size:11px;color:var(--muted);">20.0%</div></div>
+          <div style="text-align:right;"><div style="font-weight:700;font-size:13px;">6 PM</div><div style="font-size:11px;color:var(--muted);">20.0%</div></div>
+          <span style="color:var(--muted);margin-left:6px;">›</span>
+        </div>
+        <button class="btn-primary" style="width:100%;border-radius:10px;padding:11px;margin-top:14px;">View History ›</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-cols">
+      <div class="footer-col"><h4>Support</h4><a href="#">FAcis</a><a href="#">Blog ›</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">Contact Us</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">About My Running</a><a href="#">Blog</a></div>
+      <div class="footer-col"><h4>Follow Us</h4><a href="#">Privacy Policy</a></div>
+    </div>
+    <div class="footer-right">
+      <div class="social-row"><div class="soc">f</div><div class="soc">📸</div><div class="soc">▶</div><div class="soc">♪</div><div class="soc">♪</div></div>
+      <div class="copy">© 2024 My Running.. All rights reserved.</div>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: SHOE CARE
+══════════════════════════════════ -->
+<div id="page-shoe" class="page">
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Welcome back, <span>John!</span></h1>
+      <p>Monitor your running shoe condition and care tips below.</p>
+    </div>
+    <div class="hero-badge">🏃 📈 ❤️</div>
+    <div class="hero-figure">🏃</div>
+  </div>
+
+  <div class="shoe-hero-wrap">
+    <!-- Main shoe card -->
+    <div class="shoe-main-card">
+      <div class="card-title">My Running Shoes</div>
+      <div style="background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;">
+        <div class="shoe-inner-top">
+          <div style="font-size:62px;">👟</div>
+          <div>
+            <div style="font-size:15px;font-weight:800;margin-bottom:4px;">Nike Air Zoom Pegasus 39</div>
+            <div class="stars">★★★★☆</div>
+            <div style="font-size:12.5px;color:var(--muted);margin-top:4px;">Good Condition</div>
+          </div>
+        </div>
+        <div class="shoe-stats-row">
+          <div class="ss"><div class="ss-val" style="color:var(--blue);">415.5 km</div><div class="ss-lbl">Total Distance</div></div>
+          <div class="ss"><div class="ss-val">📅 August 1</div><div class="stars" style="font-size:13px;margin-top:3px;">★★★☆</div></div>
+          <div class="ss"><div style="font-size:11px;color:var(--muted);margin-bottom:3px;">Avg. Run Distance</div><div class="ss-val">6.1 km</div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn-primary">Manage Shoes</button>
+        <button class="btn-outline">View Log ›</button>
+      </div>
+    </div>
+
+    <!-- Side cards -->
+    <div class="shoe-side">
+      <div class="qr-card">
+        <div>
+          <div style="font-size:14px;font-weight:800;margin-bottom:4px;">Quick Clean QR</div>
+          <div style="font-size:12px;color:var(--muted);">Scan to clean your shoes easily!</div>
+        </div>
+        <div class="qr-code">
+          <svg viewBox="0 0 62 62" xmlns="http://www.w3.org/2000/svg">
+            <rect width="62" height="62" fill="white"/>
+            <!-- QR code pattern -->
+            <rect x="4" y="4" width="22" height="22" fill="none" stroke="black" stroke-width="3"/>
+            <rect x="8" y="8" width="14" height="14" fill="black"/>
+            <rect x="36" y="4" width="22" height="22" fill="none" stroke="black" stroke-width="3"/>
+            <rect x="40" y="8" width="14" height="14" fill="black"/>
+            <rect x="4" y="36" width="22" height="22" fill="none" stroke="black" stroke-width="3"/>
+            <rect x="8" y="40" width="14" height="14" fill="black"/>
+            <rect x="36" y="36" width="6" height="6" fill="black"/>
+            <rect x="44" y="36" width="6" height="6" fill="black"/>
+            <rect x="52" y="36" width="6" height="6" fill="black"/>
+            <rect x="36" y="44" width="6" height="6" fill="black"/>
+            <rect x="52" y="44" width="6" height="6" fill="black"/>
+            <rect x="36" y="52" width="6" height="6" fill="black"/>
+            <rect x="44" y="52" width="14" height="6" fill="black"/>
+            <rect x="28" y="4" width="6" height="6" fill="black"/>
+            <rect x="28" y="12" width="6" height="6" fill="black"/>
+            <rect x="28" y="20" width="6" height="14" fill="black"/>
+            <rect x="4" y="28" width="6" height="6" fill="black"/>
+            <rect x="12" y="28" width="14" height="6" fill="black"/>
+            <rect x="28" y="36" width="6" height="6" fill="black"/>
+          </svg>
+        </div>
+      </div>
+      <div class="dist-card">
+        <div class="dist-row"><span>🚗</span><b>415.5 km</b><span style="color:var(--muted);font-size:12px;">Total Distance Ran</span></div>
+        <div class="remind-row">📅 Reminder Due: <span>Aug 1</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shoe section - kiosk + reminders -->
+  <div style="padding:0 40px;margin-bottom:20px;">
+    <div class="section-arrow" style="margin-bottom:14px;">My Running Shoes</div>
+    <div class="shoe-section-wrap">
+      <div class="running-level-card">
+        <div class="rl-scene">
+          <div style="font-size:52px;">🏃</div>
+          <div class="rl-kiosk">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px;font-weight:700;">Running Level</div>
+            <div class="row">🏃 <span>Stable</span></div>
+            <div class="row">⚖️ <span>Balanced</span></div>
+          </div>
+          <div style="font-size:52px;">🧑‍💼</div>
+        </div>
+      </div>
+
+      <div class="reminders-card">
+        <div class="card-title">Shoe Care Reminders</div>
+        <div class="due-badge">📅 Due <span class="due">Aug 1</span></div>
+        <div class="check-list">
+          <div class="check-item">Cleaning Reminder</div>
+          <div class="check-item">Wash after 100 km</div>
+          <div class="check-item">Remove insoles for drying</div>
+          <div class="check-item">Inspect for wear</div>
+        </div>
+        <button class="btn-primary" style="border-radius:20px;padding:10px 20px;">View All Reminders →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shoe Care Tips -->
+  <div style="padding:0 40px;">
+    <div class="section-arrow" style="margin-bottom:14px;">Shoe Care Tips</div>
+  </div>
+  <div class="shoe-care-tips">
+    <div class="care-card">
+      <div class="care-card-img">🧴👟</div>
+      <div class="care-card-body">
+        <div class="care-card-title">Cleaning Tips</div>
+        <div class="care-card-desc">Keep your shoes fresh with proper cleaning techniques.</div>
+        <button class="btn-pill">View Tips ›</button>
+      </div>
+    </div>
+    <div class="care-card">
+      <div class="care-card-img">📦👟</div>
+      <div class="care-card-body">
+        <div class="care-card-title">Storage Tips</div>
+        <div class="care-card-desc">Store your shoes in the right place to prevent damage.</div>
+        <button class="btn-pill">View Tips ›</button>
+      </div>
+    </div>
+    <div class="care-card">
+      <div class="care-card-img">🔧👟</div>
+      <div class="care-card-body">
+        <div class="care-card-title">Maintenance Info</div>
+        <div class="care-card-desc">Learn how to inspect and maintain your shoes.</div>
+        <button class="btn-pill">View Tips ›</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-cols">
+      <div class="footer-col"><h4>Support</h4><a href="#">FAds</a><a href="#">Blog ›</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">Contact Us</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">Terms &amp; Conditions</a><a href="#">About My Running.</a></div>
+      <div class="footer-col"><h4>Follow Us</h4><a href="#">Privacy Policy</a></div>
+    </div>
+    <div class="footer-right">
+      <div class="social-row"><div class="soc">f</div><div class="soc">📸</div><div class="soc">▶</div><div class="soc">♪</div><div class="soc">♪</div></div>
+      <div class="copy">© 2024 My Running.. All rights reserved.</div>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: RUN TIPS
+══════════════════════════════════ -->
+<div id="page-tips" class="page">
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Keep Running Smarter, <span>John!</span></h1>
+      <p>Learn how to improve your running performance and health with tips and insights.</p>
+    </div>
+    <div class="hero-badge" style="right:310px;">👟 🥿</div>
+    <div class="hero-figure">🏃</div>
+  </div>
+
+  <div class="content">
+    <div class="tips-main-row">
+      <!-- Left: Run Tips -->
+      <div class="card">
+        <div class="card-title">Run Tips</div>
+        <div class="tip-item">
+          <div class="tip-icon">📺</div>
+          <div class="tip-body"><h4>Improve Your Form</h4><p>Perfect your posture, cadence, and foot strike.</p><button class="btn-pill">View Tips ›</button></div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">🏋️</div>
+          <div class="tip-body"><h4>Cross Training Ideas</h4><p>Try different workouts to boost your running ability.</p><button class="btn-pill">View Tips ›</button></div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon">🥗</div>
+          <div class="tip-body"><h4>Healthy Running Nutrition</h4><p>Fuel your runs with proper diet and hydration.</p><button class="btn-pill">View Tips ›</button></div>
+        </div>
+      </div>
+
+      <!-- Right: Weekly Progress -->
+      <div class="card">
+        <div class="card-title">Weekly Progress</div>
+        <div class="tips-3col">
+          <div class="tip-mini">
+            <div class="tip-icon">🏋️</div>
+            <div><b style="font-size:13px;">Cross Training Ideas</b><p class="tip-body" style="font-size:12px;color:var(--muted);">Try different workouts to boost your running ability.</p></div>
+            <button class="btn-pill">View Tips ›</button>
+          </div>
+          <div class="tip-mini">
+            <div class="tip-icon">🥗</div>
+            <div><b style="font-size:13px;">Healthy Running Nutrition</b><p style="font-size:12px;color:var(--muted);">Fuel your runs with proper diet and hydration.</p></div>
+            <button class="btn-pill">View Tips ›</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="tip-mini">
+              <div class="tip-icon">🦵</div>
+              <div><b style="font-size:13px;">Common Running Injuries</b><p style="font-size:12px;color:var(--muted);">Learn about common injuries and how to avoid them.</p></div>
+              <button class="btn-pill">View Tips ›</button>
+            </div>
+            <div class="tip-mini">
+              <div class="tip-icon">📊</div>
+              <div><b style="font-size:13px;">Run &amp; S Analysis</b><p style="font-size:12px;color:var(--muted);">Discover how running improves overall health.</p></div>
+              <button class="btn-pill">View Tips ›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-arrow">Weekly Run Tips</div>
+    <div class="wide-cards">
+      <div class="wide-card" style="background:linear-gradient(135deg,#f0f7ff,#e8f0fe);">
+        <h3>Understand Your Body</h3>
+        <p>Learn how your foot type and gait affect your performance.</p>
+        <button class="btn-pill-blue">View Tips ›</button>
+        <div class="wide-card-fig">🦶</div>
+      </div>
+      <div class="wide-card" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
+        <h3>Build Stamina Safely</h3>
+        <p>Increase your endurance while minimizing injury risk.</p>
+        <button class="btn-pill-blue" style="background:#10b981;">View Tips ›</button>
+        <div class="wide-card-fig">🏋️</div>
+      </div>
+    </div>
+
+    <div class="tips-bottom">
+      <div class="card">
+        <div class="card-title">Weekly Run Tips</div>
+        <div class="phone-mock">
+          <div class="phone-screen">
+            <div style="font-size:9px;color:var(--muted);">The Power of</div>
+            <div style="font-weight:800;color:var(--blue-dark);font-size:11px;">Interval Training</div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px;">Week 16 Tip —</div>
+            <div class="ph-list-item"><div class="ph-chk">✓</div><span>44.5— Training</span></div>
+            <div class="ph-list-item"><div class="ph-chk">✓</div><span>13.14 •67 km</span></div>
+            <div class="ph-list-item"><div class="ph-chk">✓</div><span>13.2 o2 km</span></div>
+          </div>
+        </div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.5;">Gain new insights every week to keep your runs fresh and effective.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Monthly Health Summary</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:6px;"><span style="font-size:16px;">↗</span> Mar 1 – Mar 31</div>
+        <div class="health-metric"><span>VO₂ MAX:</span><span class="val">44.5 <span class="up">● 7.2</span></span></div>
+        <div class="health-metric"><span>Muscle Mass:</span><span class="val">32.5 kg</span></div>
+        <div class="health-metric"><span>Resting HR Rate:</span><span class="val">62.0pm</span></div>
+        <svg width="100%" height="68" viewBox="0 0 300 68" xmlns="http://www.w3.org/2000/svg" style="margin-top:10px;">
+          <rect x="10" y="40" width="28" height="20" rx="3" fill="#dbeafe"/>
+          <rect x="55" y="30" width="28" height="30" rx="3" fill="#dbeafe"/>
+          <rect x="100" y="22" width="28" height="38" rx="3" fill="#dbeafe"/>
+          <rect x="145" y="14" width="28" height="46" rx="3" fill="#dbeafe"/>
+          <rect x="190" y="8" width="28" height="52" rx="3" fill="#dbeafe"/>
+          <rect x="235" y="2" width="28" height="58" rx="3" fill="#10b981" opacity=".7"/>
+          <polyline points="24,38 69,28 114,20 159,12 204,6 249,2" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="249" cy="2" r="4" fill="#10b981" stroke="#fff" stroke-width="2"/>
+          <text x="8" y="66" font-size="9" fill="#94a3b8">Mar 1</text>
+          <text x="98" y="66" font-size="9" fill="#94a3b8">Mar 11</text>
+          <text x="237" y="66" font-size="9" fill="#1e293b" font-weight="700">Today</text>
+        </svg>
+        <button class="btn-primary" style="border-radius:20px;padding:9px 20px;margin-top:12px;">View History ›</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-cols">
+      <div class="footer-col"><h4>Support</h4><a href="#">FAds</a><a href="#">Blog ›</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">Contact Us</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">About My Running</a><a href="#">Blog</a></div>
+      <div class="footer-col"><h4>Follow Us</h4><a href="#">Privacy Policy</a></div>
+    </div>
+    <div class="footer-right">
+      <div class="social-row"><div class="soc">f</div><div class="soc">📸</div><div class="soc">▶</div><div class="soc">♪</div><div class="soc">♪</div></div>
+      <div class="copy">© 2024 My Running.. All rights reserved.</div>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: RUN AWARENESS (Learn how to Run)
+══════════════════════════════════ -->
+<div id="page-learn" class="page">
+  <div class="learn-hero">
+    <h1>≡ LEARN <span class="how">HOW TO</span> <span class="run">RUN</span> ≡</h1>
+    <p style="color:var(--muted);margin-top:8px;font-size:14px;">Follow these 7 steps to find the perfect running shoes and start running with confidence.</p>
+  </div>
+
+  <!-- Row 1: Steps 1-3 -->
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px;padding:24px 40px 0;">
+    <div class="step-card" style="flex-direction:row;align-items:flex-start;gap:14px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div class="step-num">1</div><div style="font-size:13px;font-weight:700;color:var(--muted);">Start Running</div></div>
+        <div class="step-fig" style="height:130px;font-size:60px;margin-bottom:12px;">🏃</div>
+        <div class="step-desc">Gia Huy, 20 years old, FTU student wants to improve his health through running and needs running shoes.</div>
+      </div>
+    </div>
+    <div class="step-card" style="position:relative;">
+      <div class="step-arrow">→</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div class="step-num">2</div></div>
+      <div class="step-label">Use in-store digital kiosk</div>
+      <div class="step-fig" style="font-size:38px;">📱</div>
+    </div>
+    <div class="step-card" style="position:relative;">
+      <div class="step-arrow">→</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div class="step-num">3</div></div>
+      <div class="step-label">Receive tailored suggestions</div>
+      <div class="step-fig" style="font-size:38px;">👍</div>
+    </div>
+  </div>
+
+  <!-- Arrow + Row 2: Steps 4-7 -->
+  <div style="padding:6px 40px;display:flex;align-items:center;"><span style="color:var(--blue);font-size:24px;font-weight:800;">→</span></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:0 40px 28px;">
+    <div class="step-card" style="position:relative;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div class="step-num">4</div></div>
+      <div class="step-label">Learn about running form</div>
+      <div class="step-fig" style="font-size:38px;">🏃‍♂️</div>
+      <div class="step-desc" style="margin-top:8px;font-size:12px;color:var(--muted);">Stable, Balanced, Reduce Impact</div>
+      <div class="step-arrow" style="right:-14px;font-size:18px;">→</div>
+    </div>
+    <div class="step-card" style="position:relative;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div class="step-num">5</div></div>
+      <div class="step-label">Run test on mini track</div>
+      <div class="step-fig" style="font-size:38px;">👟</div>
+      <div class="step-arrow" style="right:-14px;font-size:18px;">→</div>
+    </div>
+    <div class="step-card" style="position:relative;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div class="step-num">6</div></div>
+      <div class="step-label">Reconsideration &amp; decide</div>
+      <div class="step-fig" style="font-size:38px;">🤔</div>
+      <div class="step-arrow" style="right:-14px;font-size:18px;">→</div>
+    </div>
+    <div class="step-card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div class="step-num">7</div></div>
+      <div class="step-label">Use My Running app to track shoes</div>
+      <div class="step-fig" style="font-size:38px;">📲</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:8px;">👍 Start tracking your runs!</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="padding:0 40px 28px;display:flex;justify-content:center;">
+    <div style="background:var(--white);border-radius:16px;padding:24px 32px;box-shadow:0 1px 6px rgba(0,0,0,.06);text-align:center;max-width:500px;">
+      <div style="font-size:22px;margin-bottom:8px;">🏃 Ready to run smarter?</div>
+      <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px;">Start tracking your shoes and runs with My Running app today.</p>
+      <button class="btn-primary" style="border-radius:24px;padding:12px 28px;font-size:14px;" onclick="navigate('page-shoe')">Get Started ›</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-cols">
+      <div class="footer-col"><h4>Support</h4><a href="#">FAds</a><a href="#">Blog ›</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">Contact Us</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">About My Running</a><a href="#">Blog</a></div>
+      <div class="footer-col"><h4>Follow Us</h4><a href="#">Privacy Policy</a></div>
+    </div>
+    <div class="footer-right">
+      <div class="social-row"><div class="soc">f</div><div class="soc">📸</div><div class="soc">▶</div><div class="soc">♪</div><div class="soc">♪</div></div>
+      <div class="copy">© 2024 My Running.. All rights reserved.</div>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PAGE: FAQ
+══════════════════════════════════ -->
+<div id="page-faq" class="page">
+  <div class="hero" style="min-height:200px;">
+    <div class="hero-text">
+      <h1>FAQ - You Asked. <span>We Answered!</span></h1>
+      <p>Find answers to frequently asked questions about running, shoes and more.</p>
+    </div>
+    <div class="hero-figure" style="font-size:60px;">🧑‍💻</div>
+  </div>
+
+  <div class="faq-search">
+    <div class="faq-search-inner">
+      <input class="faq-input" type="text" placeholder="Search FAQs...">
+      <button class="faq-btn">Search</button>
+    </div>
+  </div>
+
+  <div class="faq-content">
+    <!-- Running & Performance - full width -->
+    <div class="faq-section">
+      <div class="faq-section-title">👟 Running &amp; Performance</div>
+      <div style="display:flex;gap:16px;">
+        <div style="width:76px;height:76px;background:var(--blue-pale);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:38px;flex-shrink:0;">🏃</div>
+        <div style="flex:1;">
+          <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How can I improve my running pace?</div><div class="faq-chevron">⌄</div></div>
+          <div class="faq-answer">Focus on interval training, strength workouts, and gradually increasing your weekly mileage. Consistency is key — run 3–4 times per week and incorporate speed work once a week.</div>
+          <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">What is the best way to warm up before a run?</div><div class="faq-chevron">⌄</div></div>
+          <div class="faq-answer">Start with 5–10 minutes of brisk walking or light jogging, then do dynamic stretches like leg swings, hip circles, and high knees. Avoid static stretching before a run.</div>
+          <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How often should I be running each week?</div><div class="faq-chevron">⌄</div></div>
+          <div class="faq-answer">Beginners should aim for 3 runs per week with rest days. Intermediate runners can target 4–5 days. Always include at least one full rest day.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-2col">
+      <div class="faq-section" style="margin-bottom:0;">
+        <div class="faq-section-title">👟 Shoe Maintenance</div>
+        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do I clean my running shoes properly?</div><div class="faq-chevron">›</div></div>
+        <div class="faq-answer">Remove insoles and laces, brush off loose dirt, then use a damp cloth with mild soap. Air dry away from direct heat.</div>
+        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">When should I replace my running shoes?</div><div class="faq-chevron">›</div></div>
+        <div class="faq-answer">Most running shoes last 500–800 km. Replace when you notice increased soreness or worn-down outsoles.</div>
+        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How often should I be running each week?</div><div class="faq-chevron">›</div></div>
+        <div class="faq-answer">3–5 days per week is generally recommended with adequate rest and recovery days.</div>
+      </div>
+      <div class="faq-section" style="margin-bottom:0;">
+        <div class="faq-section-title">📱 Running App &amp; Tracking</div>
+        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How accurate is the My Running app in tracking distance?</div><div class="faq-chevron">›</div></div>
+        <div class="faq-answer">The app uses GPS and is accurate to within 2–5% of actual distance in open environments.</div>
+        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Can I sync My Running app with other fitness apps/devices?</div><div class="faq-chevron">›</div></div>
+        <div class="faq-answer">Yes! My Running supports syncing with Apple Health, Google Fit, Garmin, and Strava. Go to Settings › Connections.</div>
+      </div>
+    </div>
+
+    <div class="faq-2col">
+      <div class="faq-section" style="margin-bottom:0;">
+        <div class="faq-section-title">💬 Account &amp; Support</div>
+        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do I reset my password?</div><div class="faq-chevron">›</div></div>
+        <div class="faq-answer">Go to the login page and click "Forgot Password." Enter your email for a reset link.</div>
+        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How can I contact My Running support?</div><div class="faq-chevron">›</div></div>
+        <div class="faq-answer">Email support@myrunning.app or use in-app chat. We respond within 24 hours on weekdays.</div>
+      </div>
+      <div class="faq-section" style="margin-bottom:0;">
+        <div class="faq-section-title">💬 Account &amp; Support</div>
+        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do I reset my password?</div><div class="faq-chevron">›</div></div>
+        <div class="faq-answer">Go to the login page and click "Forgot Password." Enter your email for a reset link.</div>
+        <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How can I contact My Running support?</div><div class="faq-chevron">›</div></div>
+        <div class="faq-answer">Email support@myrunning.app or use in-app chat. We respond within 24 hours on weekdays.</div>
+      </div>
+    </div>
+
+    <div class="not-found">
+      <h3>You didn't find what you were looking for?</h3>
+      <p>Contact us for additional support or visit our <a href="#">Help Center</a>.</p>
+      <button class="btn-primary" style="border-radius:24px;padding:10px 28px;">Contact Support</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-cols">
+      <div class="footer-col"><h4>Support</h4><a href="#">FAds</a><a href="#">Blog ›</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">Contact Us</a></div>
+      <div class="footer-col"><h4>About Us</h4><a href="#">About My Running</a><a href="#">Blog</a></div>
+      <div class="footer-col"><h4>Follow Us</h4><a href="#">Privacy Policy</a></div>
+    </div>
+    <div class="footer-right">
+      <div class="social-row"><div class="soc">f</div><div class="soc">📸</div><div class="soc">▶</div><div class="soc">♪</div><div class="soc">♪</div></div>
+      <div class="copy">© 2024 My Running.. All rights reserved.</div>
+    </div>
+  </footer>
+</div>
+
+
+<script>
+// ── Navigation ──
+function navigate(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === pageId);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.nav-link').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    navigate(a.dataset.page);
+  });
+});
+
+// ── FAQ toggles ──
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
+</script>
+</body>
+</html>
